@@ -1,0 +1,143 @@
+<div ng-controller="DMEController">
+    <div class="container" style="margin-left:50px;">
+      <!--<input type="text" ng-model="ContentID"/>
+      <input type="button" ng-click="TestPoll()" class="btn-primary" value="Start Poll" />
+      <input type="text" ng-model="VideoID"/>
+      <input type="button" ng-click="TestVideoStatus()" class="btn-primary" value="Check Video Status" />
+      <input type="button" ng-click="TestVideoInstance()" class="btn-primary" value="Check Video Instance" />
+      <input type="button" ng-click="CheckFTPConnectivity()" class="btn-primary" value="Check FTP Connection" ng-disabled="ftpSuccess"/>
+      <input type="button" ng-click="StartIngest()" class="btn-primary" value="Start Ingest" ng-disabled="!ftpSuccess"/></br>
+      </br>
+      -->
+        <div class="panel-body-vertical-padding" >
+            <div class="container-fluid">
+                <div ng-form name="IngestForm" class="form-group">
+                  <div class="row">
+                    <label class="col-sm-2">Ingest Timeout(mins)</label>
+                    <div class="col-lg-3">
+                        <input type="text"  id="ingesttimeout" class="selectize-style form-control" ng-change="checkTimeout()" ng-model="INGEST_TIMEOUT" required />
+                    </div>
+                  </div>
+                </br>
+                  <div class="row">
+                    <label class="col-sm-2">Select DME</label>
+                    <div class="col-lg-3">
+                        <select name="selectedDMEId" ng-model="selectedDME" style="width:250px;display: inline;" class="selectize-style form-control"  ng-change="onDMEChange()" required>
+                           <option ng:repeat="dme in $root.dmes" value="{{dme.id}}"  ng-selected="{{dme.id == '0'}}" >{{dme.name}}</option>
+                        </select>
+                    </div>
+                    <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="dmeContentStatus.processing">
+                    </i>
+                  </div>
+                </br>
+                  <div class="row">
+                    <label class="col-sm-2">Enter Password</label>
+                    <div class="col-lg-3">
+                        <input type="password"  id="dmeFtpPassword" class="selectize-style form-control" ng-model="ftpPassword" required="" />
+                    </div>
+                  </div>
+                </br>
+                  <div class="row">
+                    <label class="col-sm-2" ></label>
+                    <div class="col-lg-5">
+                      <button class="btn vb-input-field btn-primary" ng-click="CheckFTPConnectivity()" ng-disabled="ftpPassword.length==0 || ftpSuccess==true" >Check FTP Connection</button>
+                      <button class="btn vb-input-field btn-primary" ng-click="StartIngest()" ng-disabled="!ftpSuccess || isQueueProcessing">Start Ingest</button>
+                      <button class="btn vb-input-field btn-primary" ng-click="StopIngest()" ng-disabled="!ftpSuccess || !isQueueProcessing">Stop Ingest</button>
+                      <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="ftpCheckProcessing || isQueueProcessing"></i>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="container" style="margin-left:50px;" ng-show="showDmeContent">
+      <strong>Default Uploader : </strong>{{defaultUploader}}    <strong style="margin-left:5em">Ingest Queue : </strong>{{IngestQueue.length}}
+      <br>
+      <br>
+      <h4><label>Overall Status</label><h4>
+      <table class="table" style="text-align: center;">
+          <tbody>
+              <tr>
+                  <td>Not Started</td>
+                  <td>{{TotalMigrationStatus.Pending}}</td>
+                  <td>Ingest in Progress</td>
+                  <td>{{TotalMigrationStatus.InProgress}}</td>
+                  <td>Ingested</td>
+                  <td>{{TotalMigrationStatus.Ingested}}</td>
+                  <td>Complete</td>
+                  <td>{{TotalMigrationStatus.Compelete}}</td>
+                  <td>Failed</td>
+                  <td>{{TotalMigrationStatus.Failed}}</td>
+              </tr>
+          </tbody>
+      </table>
+      <br>
+      <div>
+      	  <h4><label>DME Content</label></h4>
+          <!-- <div style="height:400px;overflow-y: scroll;"> -->
+          <div style="position: relative">
+            <input type="checkbox" ng-model="selectAll" ng-disabled="isQueueProcessing" style="margin-left: 25px;"/>
+            <strong style="font-size: 14px;">Select All </strong>
+
+            <button class="btn vb-input-field btn-primary" ng-disabled="isQueueProcessing || TotalMigrationStatus.InProgress!=0" ng-click="RefreshContent()" >Refresh</button>
+            <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="RefreshContentProcessing"></i>
+
+            <label class="col-sm-2" style="  font-size: 14px;  right: 0px;  position: relative;  float: right;">Max Videos:</label>
+            <input type="text" ng-model="VideoCount" ng-change="VideoCountChanged()" ng-disabled="isQueueProcessing"
+            style="position: absolute;right: 0px;width: 70px;padding: 0 10px;text-align: center;display: inline-flex;" class="form-control" only-digits>
+            <br><br>
+            <div style="position: absolute; z-index:1000; opacity: 0.2;  top: 0; left: 0; width: 100%; height:100%; background: gray;" ng-show="isQueueProcessing"></div>
+            <table ng-table="contentTable" class="table table-condensed table-bordered table-striped">
+             <tr ng-repeat="content in data" style="text-align:center" ng-class="
+            { red : content.ContentStatus.MigrationStatus == 'Error - Missing File' || content.ContentStatus.MigrationStatus == 'Error - Ingest Timeout',
+              green: content.ContentStatus.MigrationStatus=='Complete',
+              orange: content.ContentStatus.MigrationStatus=='Ingest in Progress' || content.ContentStatus.MigrationStatus=='Ingested'
+            }">
+               <td data-title="'Select'" >
+                 <input type="checkbox" ng-model="content.isSelected" ng-disabled="isQueueProcessing || content.ContentStatus.MigrationStatus!='Not Started'" />
+               </td>
+               <td data-title="'Content ID'" sortable="'ContentID'" filter="{ 'ContentID': 'text' }" >
+                   {{content.ContentID}}
+               </td>
+               <td data-title="'Title'"  sortable="'ContentDetails.Title'" filter="{ 'Title': 'text' }" >
+                   {{content.ContentDetails.Title}}
+               </td>
+               <td data-title="'Migration Status'"  sortable="'ContentStatus.MigrationStatus'" filter="{ 'MigrationStatus': 'select' }" filter-data="getMigrationFilterData"  >
+                   {{content.ContentStatus.MigrationStatus}}
+               </td>
+             </tr>
+            </table>
+            </div>
+        <!-- </div> -->
+      </div>
+      <div class="panel-heading" >
+        <div class="row">
+          <div class="col-sm-10" >
+            <h4 ng-click="isLogCollapsed = !isLogCollapsed">Debug log</h4>
+          </div>
+          <div class="col-sm-1">
+            <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DownloadLog()">Save Log</button>
+          </div>
+          <div class="col-sm-1">
+            <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="MigrationLog.length=0;">Clear Log</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" collapse="isLogCollapsed">
+      	<section>
+      		<ul id="repl-output" class="CodeMirror cm-s-neat" style="background-color:#f1f2f3;font-size:12px;">
+      			<li ng-repeat="log in MigrationLog" ng-style="log.Status=='Error' && {'background-color':'salmon'} || {'background-color': 'mediumseagreen'}">
+             <label>{{log.TimeStamp}} - &nbsp
+      				ContentID: {{log.ContentID}},&nbsp
+      				Title:{{log.Title}},&nbsp
+      				Status:{{log.Status}},&nbsp
+      				{{log.Message}}</label>
+      			</li>
+      		</ul>
+      	</section>
+      </div>
+    </div>
+</div>

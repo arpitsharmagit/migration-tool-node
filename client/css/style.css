@@ -1,0 +1,216 @@
+body {
+  padding-top: 20px !important;
+}
+
+vb-input label {
+  min-width: 12em;
+}
+
+vb-input input[type="number"], vb-input input[type="text"] {
+  min-width: 12em;
+}
+
+vb-content label, .log-list label {
+  padding-right: 1em;
+}
+.panel-body {
+  overflow-y: scroll;
+  padding: 1em;
+}
+
+.file-result {
+  max-width: 24em;
+}
+
+.glyphicon-refresh-animate {
+   -webkit-animation-name: rotateThis;
+   -webkit-animation-duration: 2s;
+   -webkit-animation-iteration-count: infinite;
+   -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes "rotateThis" {
+ from {
+        -webkit-transform: rotate( 0deg );
+    }
+ to  {
+        -webkit-transform: rotate( 360deg );
+    }
+}
+
+.center{
+text-align: center;
+}
+.well.well-sm {
+  margin-bottom: 4px;
+}
+
+.progress-main {
+    position: relative;
+    width: 100%;
+
+    margin-bottom: 4px;
+    margin-left: 0em;
+    border-radius: 0.5em;
+    clear: both;
+  }
+  .progress-pre {
+    float: left;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 0.5em;
+    text-align: center;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0;
+
+  }
+  label.progress-pre {
+    width: 12ex;
+    text-align: right;
+  }
+  .progress-container .badge {
+    margin-top: 0.4em;
+    margin-left: 0.5em;
+    border-radius: 3px;
+
+  }
+  .progress-container {
+    margin-left: 0em;
+  }
+  .progress-container .progress {
+    height: 28px;
+    margin-right: 4em;
+    margin-bottom: 0;
+    box-sizing: border-box;
+
+  }
+  .progress-label {
+    position: absolute;
+    right: 4.5em;
+    top: 0.25em;
+    padding-right: 0.5em;
+    color: black;
+    text-shadow: 0px 0px 2px rgba(255,255,255,0.5);
+
+  }
+  .progress-label.pull-right {
+    position: relative;
+    right: 0.5em;
+    color: white;
+    text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+  }
+  .progress-post {
+    position: absolute;
+    height: 2em;
+    top: 0;
+    right: 0;
+    width: 4em;
+  }
+  .progress-post .btn {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 100%;
+  }
+
+  .well .well {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  .ignored-task {
+    background: #999;
+  }
+  .ignored-task .progress-container .progress {
+    background: transparent;
+  }
+  .ignored-task {
+
+  }
+  .inline-block {
+    display: inline-block;
+  }
+  .label.inline-block, .badge.inline-block {
+    display: inline-block;
+    margin-right: 0.5ex;
+    padding: 1ex;
+  }
+
+  #repl-input {
+    border: 1px solid black;
+    margin: 0.5em;
+    overflow: hidden;
+    pointer: cursor;
+  }
+  #repl-input .CodeMirror {
+    height: 4em;
+  }
+  #repl-input .CodeMirror:before {
+    content: "\e080";
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5em;
+    float: left;
+  }
+  #repl-output {
+    list-style-type: none;
+    padding: 1em;
+    height: 20em;
+    overflow-y: auto;
+    pointer: cursor;
+  }
+  #repl-output .repl-line {
+    border-top: 1px solid #ccc;
+  }
+  #repl-output li {
+    padding: 2px 0;
+  }
+  .log-line-debug:before {
+    font-weight: bold; background-color: green; color: white;
+    white-space: pre;
+    content: ' DEBUG   '
+  }
+  .log-line-info {
+  }
+  .log-line-info:before {
+    font-weight: bold; background-color: #333; color: #ccc;
+    white-space: pre;
+    content: ' INFO   '
+  }
+  .log-line-warn {
+  }
+  .log-line-warn:before {
+    font-weight: bold; background-color: orange; color: purple;
+    white-space: pre;
+    content: ' WARN   '
+  }
+  .log-line-error {
+  }
+  .log-line-error:before {
+    font-weight: bold; background-color: red; color: white;
+    white-space: pre;
+    content: ' ERROR  '
+  }
+  .log-line-log {
+  }
+  .log-line-log:before {
+    font-weight: bold; background-color: white; color: black;
+    white-space: pre;
+    content: '        '
+  }
+  .red {
+      background-color: salmon;
+  }
+
+  .green {
+      background-color: limegreen;
+  }
+
+  .orange{
+      background-color: orange;
+  }

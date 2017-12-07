@@ -1,0 +1,145 @@
+<div>
+    <div class="container" style="margin-left:50px;">
+      <div class="panel-body-vertical-padding" >
+            <div class="container-fluid">
+                <strong><h2>DASHBOARD</h2></strong>
+                <div ng-form name="IngestForm" class="form-group" style="padding-left:50px">
+                  <div class="row">
+                    <label class="col-sm-2">Base DME</label>
+                    <div class="col-lg-3">
+                        <select ng-disabled="DistributionProcessing" ng-model="Config.BaseDMEId" style="width:250px;display: inline;" class="selectize-style form-control"  ng-change="onDMEChange()" required>
+                           <option ng:repeat="dme in RevDMEs | filter: {InVems: true}" value="{{dme.id}}"  ng-selected="{{dme.id == '00000000-0000-0000-0000-000000000000'}}" >{{dme.name}}</option>
+                        </select>
+                    </div>
+                    <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="BaseDMEProcesssing">
+                    </i>
+                  </div>
+                  <br />
+                  <div class="row">
+                    <label class="col-sm-2" ></label>
+                    <div class="col-lg-3">
+                      <label><input type="checkbox" ng-model="Config.IngestOrignal" >Ingest Original</label>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="row">
+                    <label class="col-sm-2" ></label>
+                    <div class="col-lg-3">
+                      <button class="btn vb-input-field btn-primary" ng-click="StartDistribution()" ng-disabled="Config.BaseDMEId=='00000000-0000-0000-0000-000000000000' || BaseDMEProcesssing==true || Config.FTPConnectionsCheck==false || DistributionProcessing==true" style="padding-left:15px;padding-right:15px" >Start</button>
+                      <button class="btn vb-input-field btn-primary" ng-click="StopDistribution()" ng-disabled="!DistributionProcessing" style="margin-left:15px;padding-left:15px;padding-right:15px">Stop</button>
+                    </div>
+                  </div>
+                    <br />
+                  <div class="row">
+                   <label class="col-lg-5" style="color:blue" ng-show="DistributionProcessing" >{{Config.DMEProcessStatus}}</label>
+                  </div>
+                  <br />
+                </div>
+            </div>
+            <div class="container-fluid">
+                <strong><h2>CREDENTIALS</h2></strong>
+                <div ng-form class="form-group" style="padding-left:50px">
+                    <div class="row">
+                        <label class="col-sm-2">Default FTP Username</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="selectize-style form-control" ng-model="Config.username" required="" ng-change="Config.FTPConnectionsCheck=false" />
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <label class="col-sm-2">Default FTP Password</label>
+                        <div class="col-lg-3">
+                            <input type="password" class="selectize-style form-control" ng-model="Config.password" required="" ng-change="Config.FTPConnectionsCheck=false"/>
+                        </div>
+                      </div>
+                      <br>
+                  <div class="row">
+                    <label class="col-sm-2"></label>
+                    <div class="col-lg-3">
+                        <label>
+                            <input type="checkbox" ng-model="Config.UseDefault" ng-click="onUseDefault()">
+                            Use Default for All DMEs
+                        </label>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="row">
+                    <label class="col-sm-2" ></label>
+                    <div class="col-lg-3">
+                      <!-- <input type="text" class="selectize-style form-control" ng-model="Config.TestText" required=""/>
+                      <button class="btn vb-input-field btn-primary" ng-click="Test()" style="padding-left:15px;padding-right:15px" >Test</button><br/> -->
+                      <button class="btn vb-input-field btn-primary" ng-click="CheckFTPConnections()" ng-disabled=" Config.username.length==0 || Config.password.length==0 || Config.FTPConnectionsCheck==true" style="padding-left:15px;padding-right:15px" >Check FTP Connections</button>
+                      <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="FtpProcessing"></i>
+                    </div>
+                  </div>
+                    <br />
+                  <div class="row">
+                   <label class="col-lg-5" style="color:blue" ng-show="FtpProcessing">{{ftpLabel}}</label>
+                  </div>
+                  <br />
+                </div>
+            </div>
+            <div class="container-fluid">
+                <strong><h2>DMEs</h2></strong>
+                <div ng-form name="IngestForm" class="form-group" style="padding-left:50px">
+                  <div class="row">
+                    <div class="col-sm-1"><label><input type="checkbox" ng-model="Config.SelectAll" ng-click="onUseDefault()"></label></div>
+                    <div class="col-sm-2"><label>Name</label></div>
+                    <div class="col-sm-2"><label>Use Default</label></div>
+                    <div class="col-sm-2"><label>FTP Username</label></div>
+                    <div class="col-sm-2"><label>FTP Password</label></div>
+                    <div class="col-sm-2"><label>Status</label></div>
+                  </div>
+                  <br />
+                  <div class="row" ng-repeat="dme in RevDMEs | filter: {id: '!00000000-0000-0000-0000-000000000000'}" >
+                    <div class="col-sm-1">
+                      <input type="checkbox" ng-model="dme.selected" ng-disabled="dme.isBaseDME">
+                    </div>
+                    <div class="col-sm-2">
+                      <label>{{dme.name}}</label>
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="checkbox" ng-model="dme.useDefault" >
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="text" class="selectize-style form-control" ng-disabled="dme.useDefault" ng-model="dme.username" ng-change="Config.FTPConnectionsCheck=false" />
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="text" class="selectize-style form-control" ng-disabled="dme.useDefault" ng-model="dme.password" ng-change="Config.FTPConnectionsCheck=false" />
+                    </div>
+                    <div class="col-sm-2">
+                      <label>{{dme.status}}</label>
+                    </div>
+                    <br/>
+                  </div>
+                    <br />
+                </div>
+            </div>
+            <div class="panel-heading" >
+              <div class="row">
+                <div class="col-sm-10" >
+                  <h4 ng-click="isLogCollapsed = !isLogCollapsed">Debug log</h4>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DownloadLog()">Save Log</button>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DistributionLog.length=0;">Clear Log</button>
+                </div>
+              </div>
+            </div>
+            <h4>
+            <div class="panel-body" collapse="isLogCollapsed">
+            	<section>
+            		<ul id="repl-output" class="CodeMirror cm-s-neat" style="background-color:#f1f2f3;font-size:12px;">
+            			<li ng-repeat="log in DistributionLog" ng-style="log.Status=='Error' && {'background-color':'salmon'} || {'background-color': 'mediumseagreen'}">
+                    <label>{{log.TimeStamp}} - &nbsp
+             				{{log.Message}}</label>
+            			</li>
+            		</ul>
+            	</section>
+            </div>
+            <h4>
+        </div>
+    </div>
+</div>

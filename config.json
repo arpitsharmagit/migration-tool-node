@@ -1,0 +1,22 @@
+﻿{
+	"debugMode": true,
+	"rev": {
+		"url": "http://127.0.0.1:8770/",
+		"username": "migration",
+		"password": "India@123",
+		"proxy": null,
+		"userAgent": null
+		},
+	"vems" : {
+		"vemsURL": "http://127.0.0.1",
+		"username": "admin",
+		"password": "adminadmin",
+		"outputDirectory": "%HOMEDIR%\\Desktop\\VemsDownload",
+		"filename": "VEMS_THUMBNAIL",
+		"verbose": true,
+		"linkFilename": "VEMS_COTENT_LINK",
+		"vemsDBServer":"127.0.0.1\\default",
+		"vemsDBUsername":"user",
+		"vemsDBPassword":"password"
+	}
+}

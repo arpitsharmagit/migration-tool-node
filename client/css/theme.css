@@ -1,0 +1,79 @@
+.navbar-brand,
+.active a.navbar-brand
+{
+	background-image: url('../images/branding-logo.svg');
+}
+
+.main-nav,
+.feature-wrapper
+{
+	background-color: #303030;
+}
+
+.main-nav .main-nav-links > a:hover:after,
+.main-nav .main-nav-links .active:after
+{
+	background: #00a0f0;
+}
+
+.admin-cell.active a.btn {
+	background: #00a0f0;
+	color: #303030;
+}
+
+/* ############# LIGHT THEME ############## */
+
+.light-theme .system-login .loading .maskedCircle
+{
+	border-color: #00a0f0;
+}
+
+.light-theme .main-nav {
+	background: white;
+	border-bottom: none;
+	color: #303030;
+}
+
+.light-theme .main-nav .main-nav-links > a:hover:after,
+.light-theme .main-nav .main-nav-links .active:after
+{
+	background: #303030;
+}
+
+.light-theme .admin-cell.active a.btn {
+	background: #303030;
+}
+
+.light-theme #mobile-menu:hover .icon-bar,
+.light-theme .show-nav:hover .icon-bar,
+.light-theme .show-nav.dropup .icon-bar
+{
+	background: #303030;
+}
+
+.light-theme .media-edit-tools .btn .glyphicons {
+	color: #303030;
+}
+
+@media (min-width:992px) {
+
+	.media-edit-tools {
+		background: #303030;
+	}
+}
+
+/* ############# PLAYER THEME ##############  might be better to leave this out for now
+
+.player-wrap .overlay-play:hover .circle,
+.play-pause-btn:hover,
+.ui-widget-header
+{
+	background: #303030;
+}
+/* testing
+.light-theme .player-wrap .overlay-play:hover .circle,
+.light-theme .play-pause-btn:hover,
+.light-theme .ui-widget-header
+{
+	background: #303030;
+}

@@ -1,0 +1,108 @@
+<section class="panel panel-default tabbed-panel" ng-hide="loading">
+    <form  class="form-horizontal" novalidate name="revForm">
+        <div class="panel-heading">
+            <h4>Login & Configurations</h4>
+        </div>
+        <div class="panel-body">
+            <tabset justified="true">
+                <tab active="true">
+                    <tab-heading>
+                        Configurations<i class="glyphicon small pull-right" ng-class="{
+                        'text-success glyphicon-ok': revForm.$valid,
+                        'text-warning glyphicon-asterisk': revForm.$invalid,
+                        'text-danger glyphicon-asterisk': revForm.$error.required
+                    }"></i>
+                    </tab-heading>
+                    <fieldset ng-form name="revForm" style="height:580px; width:780px; margin:0 auto">
+                        <div>
+                        <!-- <div class="form-group required">
+                            <label class="control-label col-sm-3">Rev Server Url</label><div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="text" ng-model="config.rev.url" name="url" required class="form-control" ng-blur="CheckConnection()" ng-change="status.validRevUrl=false">
+                                    </div>
+                                    <div class="success-field col-sm-6" ng-show="status.validRevUrl"></div>
+                                    <div class="required-field col-sm-6" ng-show="status.validRevUrl==false && status.processing==false"></div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div>
+                          <vb-input>
+                              <label>Rev Server Url</label>
+                              <input type="text" ng-model="config.rev.url" name="url" ng-blur="CheckConnection()" ng-change="status.validRevUrl=false" required>
+                              <label validation="required">
+                                  This field is required
+                              </label>
+                          </vb-input>
+                        <vb-input>
+                            <label>Rev Username</label>
+                            <input type="text" ng-model="config.rev.username" name="revUsername" required>
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <vb-input>
+                            <label>Rev Password</label>
+                            <input type="password" ng-model="config.rev.password" name="revPassword" required>
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <vb-input>
+                            <label>VEMS Web Server Url</label>
+                            <input type="text" ng-model="config.vems.url" name="vemshostname" required >
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <vb-input>
+                            <label>VEMS Web Username</label>
+                            <input type="text" ng-model="config.vems.username" name="vemsusername" required value="admin">
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <vb-input>
+                            <label>VEMS Web Password</label>
+                            <input type="password" ng-model="config.vems.password" name="vemspassword" required value="adminadmin">
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                         <vb-input>
+                            <label>VEMS Database Server</label>
+                            <input type="text" ng-model="config.vems.DBServer" name="dbserver" required>
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <vb-input>
+                            <label>VEMS Database Username</label>
+                            <input type="text" ng-model="config.vems.DBUsername" name="dbusername" required>
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <vb-input>
+                            <label>VEMS Database Password</label>
+                            <input type="password" ng-model="config.vems.DBPassword" name="dbpassword" required>
+                            <label validation="required">
+                                This field is required
+                            </label>
+                        </vb-input>
+                        <div class="form-group" style="margin-left:15px">
+                            <input type="hidden" ng-model="status.connected" name="validConnection">
+                            <button ng-disabled="status.validRevUrl" class="btn vb-input-field btn-primary" ng-click="CheckConnection()">Check Connection</button>
+                            <button ng-disabled="status.validRevUrl==false || revForm.$valid==false" class="btn vb-input-field btn-primary" ng-click="submit()">Login</button>
+                            <button  class="btn vb-input-field btn-primary" ng-click="saveConfig()">Save Config</button>
+                            <div class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="status.processing"></div>
+                            <div class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="loginStatus.processing"></div>
+                        </div>
+                    </div>
+                </div>
+                    </fieldset>
+                </tab>
+            </tabset>
+        </div>
+    </form>
+</section>

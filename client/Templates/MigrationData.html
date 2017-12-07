@@ -1,0 +1,221 @@
+
+<section class="panel panel-default tabbed-panel" >
+
+  <form class="form-horizontal" novalidate>
+
+    <div class="panel-heading">
+      <div class="row">
+       <h4 class="column" style="margin-left:20px">Rev Migration</h4>
+       <h5 class="column text-right" style="margin-right:20px"><strong>App Version: </strong>{{appVersion}} </h5>
+     <h5 class="column text-right" style="margin-right:20px"><strong>VEMS: </strong>{{server.vemsUrl}} </h5>
+     <h5 class="column text-right" style="margin-right:20px"><strong>Rev: </strong>{{server.revUrl}}</h5> </div>
+
+   </div>
+
+   <div>
+
+     <tabset justified="true">
+      <tab active="true">
+        <tab-heading>Categories</tab-heading>
+        <div class="container" style="margin-left:50px;">
+            <fieldset ng-form name="categoryForm" style="height:580px;">
+            <label>{{msg}}</label>
+              <div style="height:540px; overflow-y:auto;border: 1px;border-style: groove;">
+                <tree-view categories="rootNode"></tree-view>
+              </div>
+                <div style="margin-top:10px">
+                  <button class="btn vb-input-field btn-primary" ng-click="importCategories()" ng-class="{
+                  'btn-default': rev.validConnection.$valid,
+                  'btn-primary': !rev.validConnection.$invalid
+                }">Import</button>
+                <div class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="categorystatus.processing">
+              </div>
+            </div>
+          </fieldset>
+          <br/>
+            <div class="panel-heading" >
+              <div class="row">
+                <div class="col-sm-10" >
+                  <h4 ng-click="isCatLogCollapsed = !isCatLogCollapsed">Debug log</h4>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DownloadCatLog()">Save Log</button>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="categoriesLog.length=0;">Clear Log</button>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body" collapse="isCatLogCollapsed">
+              <section>
+                <ul id="repl-output" class="CodeMirror cm-s-neat" style="background-color:#f1f2f3;">
+                  <li ng-repeat="log in categoriesLog" ng-style="log.Status=='Error' && {'background-color':'salmon'} || {'background-color': 'mediumseagreen'}">
+                    <label>{{log.TimeStamp}} - {{log.Message}}</label>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+</tab>
+<tab>
+  <tab-heading>Live URLs</tab-heading>
+  <div class="container" style="margin-left:50px;">
+    <fieldset ng-form name="liveURLForm" style="height:auto;">
+         <label>{{liveMsg}}</label>
+          <table  st-table="liveUrl" class="table" style="text-align:center;">
+            <thead>
+              <tr>
+               <th>Title</th>
+               <th>Url</th>
+               <th>Encoding Type</th>
+             </tr>
+           </thead>
+           <tbody ng-repeat="s in liveUrl">
+              <tr>
+               <td>{{s.Title}}</td>
+               <td>{{s.ContentInstances[0].URL}}</td>
+               <td>{{ s.ContentInstances[0].EnumEncodingTypeValue }}</td>
+             </tr>
+           </tbody>
+         </table>
+         <input type="button" ng-click="importLiveUrl()" class="btn-primary" value="Import"/>
+         <div class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="liveUrlStatus.processing"></div>
+    </fieldset>
+    <br/>
+  <div class="panel-heading" >
+    <div class="row">
+      <div class="col-sm-10" >
+        <h4 ng-click="isliveLogCollapsed = !isliveLogCollapsed">Debug log</h4>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DownloadliveLog()">Save Log</button>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="liveURLLog.length=0;">Clear Log</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body" collapse="isliveLogCollapsed">
+    <section>
+      <ul id="repl-output" class="CodeMirror cm-s-neat" style="background-color:#f1f2f3;">
+        <li ng-repeat="log in liveURLLog" ng-style="log.Status=='Error' && {'background-color':'salmon'} || {'background-color': 'mediumseagreen'}">
+          <label>{{log.TimeStamp}} - {{log.Message}}</label>
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>
+</tab>
+<tab >
+  <tab-heading>Stored URLs</tab-heading>
+  <div class="container" style="margin-left:50px;">
+  <fieldset ng-form name="storedURLForm" style="height:auto;">
+      <label>{{storedMsg}}</label>
+      <table st-table="storedUrl" class="table" style="text-align:center;">
+        <thead>
+         <tr>
+           <th>Title</th>
+           <th>Url</th>
+           <th>Encoding Type</th>
+         </tr>
+       </thead>
+       <tbody ng-repeat="s in storedUrl">
+          <tr>
+           <td>{{s.Title}}</td>
+           <td>{{s.ContentInstances[0].URL}}</td>
+           <td>{{ s.ContentInstances[0].EnumEncodingTypeValue }}</td>
+         </tr>
+        </tbody>
+      </table>
+      <input type="button" ng-click="importStoredUrl()" class="btn-primary" value="Import"/>
+      <div class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="storedUrlStatus.processing"> </div>
+  </fieldset>
+  <br/>
+  <div class="panel-heading" >
+    <div class="row">
+      <div class="col-sm-10" >
+        <h4 ng-click="isstoredLogCollapsed = !isstoredLogCollapsed">Debug log</h4>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DownloadstoredLog()">Save Log</button>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="storedURLLog.length=0;">Clear Log</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body" collapse="isstoredLogCollapsed">
+  <section>
+    <ul id="repl-output" class="CodeMirror cm-s-neat" style="background-color:#f1f2f3;">
+      <li ng-repeat="log in storedURLLog" ng-style="log.Status=='Error' && {'background-color':'salmon'} || {'background-color': 'mediumseagreen'}">
+        <label>{{log.TimeStamp}} - {{log.Message}}</label>
+      </li>
+    </ul>
+  </section>
+  </div>
+</div>
+</tab>
+<tab>
+  <tab-heading>Step 1 – Ingest</tab-heading>
+<fieldset ng-form name="dmeContentForm" style="height:auto; width:780px;">
+  <ng-include src="'partials/dme-content.html'"></ng-include>
+  <input type="hidden" ng-model="userSessionID" name="hdnUserSessionID">
+</fieldset>
+</tab>
+<tab  ng-controller="DistDMEController">
+  <tab-heading>Step 2 – Distribution</tab-heading>
+<fieldset ng-form name="distdmeContentForm" style="height:auto; width:780px;">
+  <ng-include src="'partials/dme-dist-content.html'"></ng-include>
+</fieldset>
+</tab>
+<tab>
+  <tab-heading> Step 3 – Cleanup</i>
+</tab-heading>
+<div class="container" style="margin-left:50px;">
+<fieldset ng-form name="CleanupForm" style="height:auto; width:780px; margin-top:50px;">
+  <div >
+  <label>{{cleanupMsg}}</label>
+  <div style="margin-top:10px">
+
+    <button class="btn vb-input-field btn-primary" ng-click="StartCleanup()" ng-class="{
+    'btn-default': rev.validConnection.$valid,
+    'btn-primary': !rev.validConnection.$invalid
+  }">Start Cleanup</button>
+  <div class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-top:5px;top:2px" ng-show="cleanupStatus.processing">
+  </div>
+  <div style="color:blue;margin-top:20px;">
+    <label><strong>REMINDER: After completion of this step, please remember to run the Rev Permissions Tool to assign privileges to the imported content.</strong></label>
+  </div>
+</div>
+</div>
+</fieldset>
+<div class="panel-heading" >
+        <div class="row">
+          <div class="col-sm-10" >
+            <h4 ng-click="isLogCollapsed = !isLogCollapsed">Debug log</h4>
+          </div>
+          <div class="col-sm-1">
+            <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="DownloadLog()">Save Log</button>
+          </div>
+          <div class="col-sm-1">
+            <button class="btn vb-input-field btn-primary" style="padding-left:15px;padding-right:15px;" ng-click="cleanupMigrationLog.length=0;">Clear Log</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" collapse="isLogCollapsed">
+        <section>
+          <ul id="repl-output" class="CodeMirror cm-s-neat" style="background-color:#f1f2f3">
+            <li ng-repeat="log in cleanupMigrationLog" ng-style="log.Status=='Error' && {'background-color':'salmon'} || {'background-color': 'mediumseagreen'}">
+              {{log.logDate}}, &nbsp
+              Status:{{log.Status}},&nbsp
+              {{log.Message}}
+            </li>
+          </ul>
+        </section>
+      </div>
+</div>
+</tab>
+</tabset>
+</div>
+</form>
+</section>

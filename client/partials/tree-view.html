@@ -1,0 +1,6 @@
+<div class="list-group" ng-repeat="category in categories">
+	<div class="list-group-item">{{category.path | rightArrow}}</div>
+		<div ng-if="category.children.length > 0">
+			<tree-view categories="category.children"></tree-view>
+		</div>
+</div>
